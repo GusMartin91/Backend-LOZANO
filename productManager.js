@@ -21,8 +21,11 @@ class ProductManager {
     }
 
     addProduct(product) {
-        if (!product.title || !product.description || !product.price || !product.thumbnail || !product.code || !product.stock) {
-            return console.log("¡Falta completar algún datos del producto!")
+        const requiredFields = ['title', 'description', 'price', 'thumbnail', 'code', 'stock'];
+        for (const field of requiredFields) {
+            if (!product[field]) {
+                return console.log(`Falta completar el campo "${field}" del producto`);
+            }
         }
 
         if (this.isCodeDuplicate(product.code)) {
