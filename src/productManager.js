@@ -1,4 +1,4 @@
-const fs = require('fs')
+import fs from 'fs'
 
 class ProductManager {
     constructor(path) {
@@ -8,7 +8,7 @@ class ProductManager {
                 let productos = fs.readFileSync(path, "utf-8")
                 this.products = JSON.parse(productos)
             } catch (error) {
-                this.product = []
+                this.products = []
             }
         } else {
             this.products = []
@@ -120,21 +120,4 @@ const producto3 = new Product("banana", "banana seleccionada", 1200, "https://im
 
 const prodManager = new ProductManager("./Productos.json")
 
-
-/* INTENTANDO VARIAS PRUEBAS EN GENERAL */
-
-// Agregando productos
-// prodManager.addProduct(producto1)
-// prodManager.addProduct(producto2)
-// prodManager.addProduct(producto3)
-
-
-// console.log(prodManager.getProducts());
-
-
-// Para editar un producto por su ID
-// prodManager.updateProduct(3, producto1);
-
-
-// Para eliminar un producto por su ID
-// prodManager.deleteProduct(2);
+export { ProductManager, Product };
