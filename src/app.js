@@ -11,7 +11,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
 const prodManager = new ProductManager("./Productos.json");
-const cartManager = new CartManager("./Carts.json", prodManager);
+const cartManager = new CartManager("./Carritos.json", prodManager);
 
 
 
