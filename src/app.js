@@ -1,39 +1,25 @@
 import express from 'express';
+import productsRouter from "./routes/products.router.js";
+import cartsRouter from "./routes/carts.router.js";
 import { ProductManager } from './productManager.js';
+import { CartManager } from './cartManager.js';
 
 const app = express();
 const port = 8080;
 
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+
 const prodManager = new ProductManager("./Productos.json");
+const cartManager = new CartManager("./Carts.json", prodManager);
 
-app.get('/products', async (req, res) => {
-    try {
-        const products = prodManager.getProducts();
-        const limit = req.query.limit;
 
-        if (limit) {
-            res.json(products.slice(0, limit));
-        } else {
-            res.json(products);
-        }
-    } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
 
-app.get('/products/:pid', async (req, res) => {
-    try {
-        const productId = parseInt(req.params.pid);
-        const product = prodManager.getProductByID(productId);
+app.use('/api/products', productsRouter(prodManager));
+app.use('/api/carts', cartsRouter(cartManager, prodManager));
 
-        if (product) {
-            res.json(product);
-        } else {
-            res.status(404).json({ error: 'Product not found' });
-        }
-    } catch (error) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
+app.get('/', (req, res) => {
+    res.send('Bienvenido a mi aplicación.');
 });
 
 app.listen(port, () => {

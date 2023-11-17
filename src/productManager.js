@@ -50,20 +50,25 @@ class ProductManager {
         }
 
         if (this.isCodeDuplicate(product.code)) {
-            return console.log("¡El código del producto ya existe!");
+            return console.log('¡El código del producto ya existe!');
         }
 
-        const maxId = this.products.reduce((max, product) => (product.id > max ? product.id : max), 0);
-        product.id = maxId + 1;
-
+        product.id = this.getNextProductId();
         this.products.push(product);
-        const respuesta = await this.saveFile(this.products)
+
+        const respuesta = await this.saveFile(this.products);
         if (respuesta) {
-            console.log("Producto añadido");
+            console.log('Producto añadido');
         } else {
-            console.log("Hubo un error al añadir producto");
+            console.log('Hubo un error al añadir producto');
         }
     }
+
+    getNextProductId() {
+        const maxId = this.products.reduce((max, product) => (product.id > max ? product.id : max), 0);
+        return maxId + 1;
+    }
+
 
     async updateProduct(id, updatedProduct) {
         const productIndex = this.products.findIndex(product => product.id === id);
