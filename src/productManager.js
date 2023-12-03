@@ -24,6 +24,7 @@ class ProductManager {
             return false
         }
     }
+
     getProducts() {
         return this.products;
     }
